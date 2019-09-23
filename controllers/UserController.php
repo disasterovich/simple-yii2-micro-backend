@@ -55,74 +55,39 @@ class UserController extends \yii\rest\Controller
     return $behaviors;
     }
 
+    /**
+     * По емайлу и паролю получает токен доступа
+     * @return array
+     */
     public function actionLogin()
 	{
         $model = new LoginForm();
 
-        if ($model->load(\Yii::$app->request->post(),'') && $model->validate()) {
-
-            $user = User::findOne(['email' => $model->email]);
-
-            if ($user) {
-                $password_hash = User::hashPassword($model->password, $user->salt);
-
-                if ($password_hash === $user->password) {
-                    return ['status' => 'success',
-                        'user_data' => [
-                            'token' => $user->access_token,
-                            'id'    => $user->id,
-                            'email' => $user->email,
-                            'name'  => $user->name,
-                        ]
-                    ];
-                    }
-                else {
-                    return [
-                        'status' => 'error',
-                        'errors' => [
-                            'password' => ['Неверный пароль',]
-                        ]
-                    ];
-                }
-            }
-            else {
-                return [
-                    'status' => 'error',
-                    'errors' => [
-                        'password' => ['Пользователь не найден',]
-                    ]
-                ];
-            }
+        if ($model->load(\Yii::$app->request->post(),'')
+            && $model->validate() && $model->login()) {
+            return [
+                'status' => 'success',
+                'user_data' => $model->userData
+            ];
         }
         else {
-                return [
-                    'status' => 'error',
-                    'errors' => $model->getErrors()
-                ];
+            return [
+                'status' => 'error',
+                'errors' => $model->getErrors()
+            ];
         }
-
 	}
 
+    /**
+     * Регистрирует нового пользователя
+     * @return array
+     */
     public function actionRegister()
     {
         $model = new RegisterForm();
 
-        if ($model->load(\Yii::$app->request->post(), '') && $model->validate()) {
-
-            if ( User::find()->where(['email' => $model->email])->exists() ) {
-                $model->addError('email', 'Пользователь с таким email уже есть в базе');
-
-                return [
-                    'status' => 'error',
-                    'errors' => $model->getErrors()
-                ];
-            }
-
-            $user = new User();
-            $user->name = $model->name;
-            $user->email = $model->email;
-            $user->save(false);
-
+        if ($model->load(\Yii::$app->request->post(), '')
+            && $model->validate() && $model->register()) {
             return ['status' => 'success'];
         }
         else {
@@ -131,6 +96,5 @@ class UserController extends \yii\rest\Controller
                 'errors' => $model->getErrors()
             ];
         }
-
     }
 }

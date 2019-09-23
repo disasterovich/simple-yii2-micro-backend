@@ -112,6 +112,44 @@ class OrderController extends \yii\rest\Controller
 
     /**
      * @param $id
+     * @return array
+     * @throws HttpException
+     */
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+
+        return [
+            'status' => 'success',
+            'order_data' => [
+                'id'                => $model->id,
+                'clientName'        => $model->client->name,
+                'clientPhone'       => $model->client->phone,
+                'departureAddress'  => $model->departure->address,
+                'departureFrom'     => $model->departure->from,
+                'departureTo'       => $model->departure->to,
+            ]
+        ];
+    }
+
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->delete()) {
+            return [
+                'status' => 'success',
+            ];
+        }
+
+        return [
+            'status' => 'error',
+            'errors' => $model->getErrors()
+        ];
+    }
+
+    /**
+     * @param $id
      *
      * @return array|Order|null
      * @throws HttpException

@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use micro\models\User;
 use Yii;
 use yii\base\Model;
 
@@ -33,5 +34,19 @@ class RegisterForm extends Model
             'password' => 'Пароль',
             'password2' => 'Повтор пароля',
             ];
-        }        
+        }
+
+    public function register()
+    {
+        if ( !User::find()->where(['email' => $this->email])->exists() ) {
+            $user = new User();
+            $user->name = $this->name;
+            $user->email = $this->email;
+            return $user->save(false);
+        }
+
+        $this->addError('email', 'Пользователь с таким email уже есть в базе');
+        return false;
+    }
+
     }

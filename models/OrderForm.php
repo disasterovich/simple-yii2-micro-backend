@@ -70,17 +70,18 @@ class OrderForm extends \yii\base\Model
             $this->_client = new Client();
             $this->_departure = new Departure();
         } else {
+            $this->_order = $order;
             $this->_client = $order->client;
             $this->_departure = $order->departure;
 
             $this->clientName = $this->_client->name;
             $this->clientPhone = $this->_client->phone;
 
-            $this->departureAddress = $this->departure->address;
-            $this->departureFromTime = Yii::$app->formatter->asTime($this->departure->from, 'php:H:i');
-            $this->departureFromDate = Yii::$app->formatter->asDate($this->departure->from, 'php:Y-m-d');
-            $this->departureToTime = Yii::$app->formatter->asTime($this->departure->to, 'php:H:i');
-            $this->departureToDate = Yii::$app->formatter->asDate($this->departure->to, 'php:Y-m-d');
+            $this->departureAddress = $this->_departure->address;
+            $this->departureFromTime = Yii::$app->formatter->asTime($this->_departure->from, 'php:H:i');
+            $this->departureFromDate = Yii::$app->formatter->asDate($this->_departure->from, 'php:Y-m-d');
+            $this->departureToTime = Yii::$app->formatter->asTime($this->_departure->to, 'php:H:i');
+            $this->departureToDate = Yii::$app->formatter->asDate($this->_departure->to, 'php:Y-m-d');
         }
 
         parent::__construct($config);
@@ -144,7 +145,7 @@ class OrderForm extends \yii\base\Model
                 throw new \yii\base\ErrorException("Выезд не может быть сохранен.");
             }
 
-            if ($this->_order->isNewRecord ) {
+            if ($this->_order->isNewRecord) {
                 $this->_order->client_id = $this->_client->id;
                 $this->_order->departure_id = $this->_departure->id;
 
