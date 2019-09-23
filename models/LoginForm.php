@@ -2,13 +2,15 @@
 namespace micro\models;
 
 use Yii;
-use yii\base\Model;
 
-class LoginForm extends Model
+class LoginForm extends \yii\base\Model
     {
     public $email;
     public $password;
 
+    /**
+     * @var array
+     */
     protected $_userData;
 
     public function rules()

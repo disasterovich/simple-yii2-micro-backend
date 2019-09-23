@@ -2,14 +2,11 @@
 
 namespace micro\controllers;
 
-use app\models\RegisterForm;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\ContentNegotiator;
 use yii\web\Response;
-use yii\filters\AccessControl;
+use micro\models\RegisterForm;
 use micro\models\LoginForm;
-use micro\models\User;
-use yii\web\HttpException;
 
 class UserController extends \yii\rest\Controller
 {

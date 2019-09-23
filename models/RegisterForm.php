@@ -1,11 +1,9 @@
 <?php
-namespace app\models;
+namespace micro\models;
 
-use micro\models\User;
 use Yii;
-use yii\base\Model;
 
-class RegisterForm extends Model
+class RegisterForm extends \yii\base\Model
     {
     public $name;
     public $email;

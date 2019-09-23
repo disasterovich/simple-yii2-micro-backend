@@ -132,6 +132,11 @@ class OrderController extends \yii\rest\Controller
         ];
     }
 
+    /**
+     * @param $id
+     * @return array
+     * @throws HttpException
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);

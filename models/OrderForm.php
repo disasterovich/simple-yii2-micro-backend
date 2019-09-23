@@ -2,9 +2,6 @@
 namespace micro\models;
 
 use Yii;
-use micro\models\Order;
-use micro\models\Client;
-use micro\models\Departure;
 
 class OrderForm extends \yii\base\Model
     {
